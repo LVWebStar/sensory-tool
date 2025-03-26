@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensory Self-Assessment Tool</title>
+    <style>
+        /* Basic Reset / Box Sizing */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        /* Base Styles for mobile first */
+        html {
+            font-size: 100%; /* Base font size */
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; /* System font stack */
+            line-height: 1.6;
+            margin: 0; /* Remove default margin */
+            padding: 15px; /* Padding for small screens */
+            background-color: #fff;
+            color: #333;
+        }
+
+        /* Container to center content on larger screens */
+        .container {
+            max-width: 800px; /* Max width of content */
+            margin: 0 auto; /* Center horizontally */
+        }
+
+        h1, h2 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+            margin-top: 1em;
+            margin-bottom: 0.8em;
+        }
+        h1 { font-size: 1.8em; }
+        h2 { font-size: 1.4em; }
+
+        p {
+            margin-bottom: 1em;
+        }
+
+        .question-group {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+        }
+
+        .question-item {
+            margin-bottom: 12px;
+            display: flex; /* Use flexbox for alignment */
+            align-items: flex-start; /* Align items to the top */
+        }
+
+        /* Style checkbox */
+        input[type="checkbox"] {
+            cursor: pointer;
+            width: 1.3em; /* Make checkbox slightly larger */
+            height: 1.3em;
+            margin-right: 10px;
+            flex-shrink: 0; /* Prevent checkbox from shrinking */
+            margin-top: 0.15em; /* Align better with text */
+        }
+
+        /* Style label */
+        label {
+            cursor: pointer;
+            flex-grow: 1; /* Allow label to take remaining space */
+        }
+
+        /* Base Button Styles */
+        button {
+            display: block; /* Make buttons block level by default */
+            width: 100%; /* Full width for mobile */
+            padding: 12px 20px; /* Generous padding for touch */
+            font-size: 1em;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 15px; /* Space below buttons */
+        }
+
+        /* Style for the Generate button */
+        button#generateBtn {
+            background-color: #007bff; /* Blue */
+            color: white;
+        }
+        button#generateBtn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Style for the Clear button */
+        button#clearBtn {
+            background-color: #6c757d; /* Grey */
+            color: white;
+            margin-top: 10px; /* Add space above */
+        }
+        button#clearBtn:hover {
+            background-color: #5a6268;
+        }
+
+        /* --- Media Query for Larger Screens (e.g., tablets and desktops) --- */
+        @media (min-width: 600px) {
+            body {
+                padding: 20px; /* Increase padding slightly */
+            }
+
+            /* Make buttons less wide on larger screens */
+            button {
+                width: auto; /* Auto width based on content */
+                max-width: 300px; /* Limit max width */
+                display: inline-block; /* Allow inline-block */
+                margin-right: 10px; /* Add space between buttons if needed */
+            }
+
+             /* Adjust clear button positioning - make it appear on the right */
+             .button-wrapper {
+                 display: flex;
+                 justify-content: flex-end; /* Pushes button to the right */
+                 margin-bottom: 15px;
+             }
+             button#clearBtn {
+                 width: auto; /* Auto width */
+                 max-width: 200px;
+                 margin-bottom: 0; /* Remove bottom margin when inline */
+                 margin-left: auto; /* Push to right if flex doesn't work in all contexts */
+             }
+             button#generateBtn {
+                 display: block; /* Keep generate button block level */
+                 width: 100%; /* Full width */
+                 max-width: 350px; /* Limit width */
+                 margin: 20px auto; /* Center it */
+             }
+        } /* End of media query */
+
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <h1>Sensory Self-Assessment Tool</h1>
+        <p>Check any boxes that apply to you. Then click the button to generate your personalized suggestions in a new tab.</p>
+
+        <div class="button-wrapper">
+             <button id="clearBtn">Clear All Selections</button>
+        </div>
+
+        <form id="sensoryForm">
+            <div class="question-group">
+                <h2>Section 1: Select the Option That Best Matches Your Experience</h2>
+                <div class="question-item">
+                    <input type="checkbox" id="q1_restless" data-category="Tactile" data-recommendation="Tactile tools (e.g., fidget items, textured objects)">
+                    <label for="q1_restless">My body feels restless or fidgety</label>
+                </div>
+                <div class="question-item">
+                    <input type="checkbox" id="q1_dizzy" data-category="Cold/Weighted" data-recommendation="Cold or Weighted tools (e.g., ice packs, weighted lap pads)">
+                    <label for="q1_dizzy">I feel dizzy, disconnected, or “out of my body”</label>
+                </div>
+                <div class="question-item">
+                    <input type="checkbox" id="q1_heart" data-category="Breathing" data-recommendation="Breathing tools (e.g., straw breathing, visual breath guides)">
+                    <label for="q1_heart">My heart races or I start to breathe too fast</label>
+                </div>
+                <div class="question-item">
+                    <input type="checkbox" id="q1_sounds" data-category="Auditory" data-recommendation="Auditory tools (e.g., noise-canceling earbuds, white noise)">
+                    <label for="q1_sounds">Sounds feel too loud or overwhelming</label>
+                </div>
+                <div class="question-item">
+                    <input type="checkbox" id="q1_look" data-category="Visual" data-recommendation="Visual grounding tools (e.g., focus objects, visual cards)">
+                    <label for="q1_look">I just need to look at something to focus</label>
+                </div>
+                <div class="question-item">
+                    <input type="checkbox" id="q1_smells" data-category="Olfactory" data-recommendation="Olfactory tools (e.g., essential oil rollers, scented putty, smell sticks)">
+                    <label for="q1_smells">I’m calmed by smells like lavender or mint</label>
+                </div>
+            </div>
+
+            <div class="question-group">
+                <h2>Section 2: What Helps You Feel Calm Quickly?</h2>
+                <div class="question-item">
+                    <input type="checkbox" id="q2_squeeze" data-category="Tactile" data-recommendation="Fidget items or textured stress balls">
+                    <label for="q2_squeeze">Squeezing or touching something with my hands</label>
+                </div>
+                <div class="question-item">
+                    <input type="checkbox" id="q2_heavy" data-category="Cold/Weighted" data-recommendation="Weighted objects or compression tools">
+                    <label for="q2_heavy">Holding something heavy or warm</label>
+                </div>
+                <div class="question-item">
+                    <input type="checkbox" id="q2_music" data-category="Auditory" data-recommendation="White noise machines or nature soundtracks">
+                    <label for="q2_music">Listening to music or calming sounds</label>
+                </div>
+                <div class="question-item">
+                    <input type="checkbox" id="q2_taste" data-category="Taste" data-recommendation="Taste-based grounding (e.g., sour strips, mints)">
+                    <label for="q2_ taste">Sucking on strong mints or sour candy</label>
+                </div>
+                 <div class="question-item">
+                    <input type="checkbox" id="q2_watch" data-category="Visual" data-recommendation="Visual focus objects or color-shifting toys">
+                    <label for="q2_watch">Watching something calming</label>
+                </div>
+                <div class="question-item">
+                    <input type="checkbox" id="q2_read" data-category="Cognitive" data-recommendation="Cognitive cue cards (e.g., grounding affirmations)">
+                    <label for="q2_read">Reading helpful reminders or mantras</label>
+                </div>
+                <div class="question-item">
+                    <input type="checkbox" id="q2_smell" data-category="Olfactory" data-recommendation="Olfactory calming tools (e.g., scent tubes, aroma patches, herbal pouches)">
+                    <label for="q2_smell">Smelling something comforting like lavender or citrus</label>
+                </div>
+            </div>
+        </form>
+
+        <button id="generateBtn">Generate My Sensory Profile Suggestions</button>
+
+    </div> <script>
+        const generateButton = document.getElementById('generateBtn');
+        const form = document.getElementById('sensoryForm');
+        const clearButton = document.getElementById('clearBtn');
+
+        // Function to extract examples (remains the same)
+        function extractExamples(recString) {
+            const examples = new Set(); const match = recString.match(/e\.g\.,\s*([^)]+)\)?/); if (match && match[1]) { match[1].split(/,|\bor\b/).forEach(s => { const tool = s.trim(); if (tool && !tool.toLowerCase().includes('etc')) { examples.add(tool.charAt(0).toUpperCase() + tool.slice(1)); } }); } const baseToolMatch = recString.match(/^([\w\s-]+?)(\s*\(e\.g\.|tools)/); if (baseToolMatch && baseToolMatch[1]) { const baseTool = baseToolMatch[1].trim(); if (baseTool.toLowerCase() !== 'tools') { examples.add(baseTool.charAt(0).toUpperCase() + baseTool.slice(1)); } } if (examples.size === 0 && !recString.toLowerCase().includes('(e.g.')) { examples.add(recString.charAt(0).toUpperCase() + recString.slice(1)); } return Array.from(examples);
+        }
+
+        // Comprehensive Sensory Tool Examples object (remains the same)
+        const comprehensiveSensoryTools = { 'Tactile': ['Fidget toy (spinner, cube, etc.)', 'Textured ball', 'Soft fabric/blanket', 'Kinetic sand', 'Stress ball', 'Play-doh/putty', 'Worry stone', 'Sequin pillow/fabric', 'Acupressure ring', 'Massage roller', 'Slime', 'Touching different textures (wood, metal)'], 'Cold/Weighted': ['Instant ice pack (wrapped)', 'Cooling roller', 'Cold stone', 'Gel eye mask (from fridge)', 'Refrigerated lotion', 'Cold drink bottle', 'Splashing face with cold water', 'Frozen washcloth (in bag)', 'Weighted lap pad', 'Compression band', 'Weighted stuffed animal', 'Weighted blanket', 'Weighted vest', 'Compression clothing', 'Tight self-hug', 'Heavy book on lap', 'Beanbag chair (pressure)'], 'Visual': ['5-4-3-2-1 card/prompt', 'Calming visual aid', 'Focus object', 'Glitter jar/timer', 'Lava lamp', 'Looking out window (describe details)', 'Watching aquarium (real/digital)', 'Focusing on one color', 'Pictures of calming places/loved ones', 'Color-changing light', 'Kinetic sand video'], 'Auditory': ['Noise-canceling earbuds/headphones', 'White noise machine', 'Calming music (instrumental, ambient)', 'Noise-reducing earplugs', 'Nature sound app (rain, waves)', 'Binaural beats (headphones needed)', 'Listening to a fan/clock ticking', 'Guided meditation audio', 'Sound bowl/chime recording'], 'Taste': ['Sour candy', 'Strong mint', 'Gum', 'Tart fruit (lemon, grapefruit)', 'Crunchy snack (carrot, pretzel)', 'Chewy snack (dried fruit)', 'Sipping cold/fizzy water', 'Sucking on ice chip', 'Strong flavored tea (peppermint, ginger)', 'Dark chocolate piece'], 'Olfactory': ['Essential oil roller/diffuser', 'Scented putty', 'Aromatherapy inhaler', 'Scented lotion', 'Scented candle (safe use)', 'Smelling coffee grounds/tea leaves', 'Peeling a citrus fruit', 'Smelling fresh herbs (mint)', 'Herbal sachet (lavender)'], 'Breathing': ['Breathing exercise device', 'Straw (for controlled exhale)', 'Visual breath guide (app/image)', 'Pinwheel (steady exhale practice)', 'Blowing bubbles (slowly)', 'Guided breathing app', 'Hoberman sphere (visual aid)', 'Manual counting (4-7-8, box breathing)', 'Hand on belly to feel breath'], 'Cognitive': ['Emergency grounding prompt card', 'Affirmation card', 'Anxiety CBT card', 'Coping skills reminder card', 'Mindfulness exercise card', 'DBT skills card', 'Problem-solving steps card', 'Personal strength reminder card', 'Written safety plan card', 'Helpful contacts list'] };
+
+        // --- Event Listener for Generate Button ---
+        generateButton.addEventListener('click', function() {
+            // Logic remains the same: gather data, prepare HTML, open new window...
+            const checkedBoxes = form.querySelectorAll('input[type="checkbox"]:checked');
+            const categories = new Set();
+            const recommendationsByCategory = new Map();
+            const allToolSuggestions = new Set();
+            checkedBoxes.forEach(checkbox => { const category = checkbox.getAttribute('data-category'); const recommendation = checkbox.getAttribute('data-recommendation'); categories.add(category); if (!recommendationsByCategory.has(category)) { recommendationsByCategory.set(category, new Set()); } recommendationsByCategory.get(category).add(recommendation); const examplesFromCheckbox = extractExamples(recommendation); examplesFromCheckbox.forEach(tool => allToolSuggestions.add(tool)); if (comprehensiveSensoryTools[category]) { comprehensiveSensoryTools[category].forEach(tool => allToolSuggestions.add(tool)); } });
+            let resultsContentHTML = '';
+            if (checkedBoxes.length === 0) { resultsContentHTML = '<p>No options were selected...</p>'; } else { resultsContentHTML += `<h3>Potential Sensory Tools...</h3>`; recommendationsByCategory.forEach((recSet, category) => { resultsContentHTML += `<h4>${category} Tools:</h4><ul>`; recSet.forEach(rec => { resultsContentHTML += `<li>${rec}</li>`; }); resultsContentHTML += `</ul>`; }); resultsContentHTML += `<div class="profile-section"><h3>Your Sensory Profile</h3>`; const topSensesArray = Array.from(categories); resultsContentHTML += `<div class="profile-line"><strong>Top calming sense(s):</strong>`; if (topSensesArray.length > 0) { resultsContentHTML += `<ol>`; topSensesArray.forEach(sense => { resultsContentHTML += `<li>${sense}</li>`; }); resultsContentHTML += `</ol>`; } else { resultsContentHTML += `<span> (None selected)</span>`; } resultsContentHTML += `</div>`; let suggestionsArray = Array.from(allToolSuggestions); for (let i = suggestionsArray.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [suggestionsArray[i], suggestionsArray[j]] = [suggestionsArray[j], suggestionsArray[i]]; } const finalToolSuggestions = suggestionsArray.slice(0, 3); resultsContentHTML += `<div class="profile-line"><strong>Suggested tools...</strong>`; if (finalToolSuggestions.length > 0) { resultsContentHTML += `<ol>`; finalToolSuggestions.forEach(tool => { resultsContentHTML += `<li>${tool}</li>`; }); for (let i = finalToolSuggestions.length; i < 3; i++) { resultsContentHTML += `<li>(Consider another tool...)</li>`; } resultsContentHTML += `</ol>`; } else { resultsContentHTML += `<p>(No specific tool suggestions...)</p>`; } resultsContentHTML += `</div></div>`; resultsContentHTML += `<div class="next-step-section"><h3>Next Step...</h3><p>Now that you know...</p></div>`; }
+
+            // --- Write to New Window ---
+            let newWindow = window.open('', '_blank');
+            newWindow.document.open();
+            const currentDate = new Date(2025, 2, 26).toLocaleDateString();
+            const currentLocation = "Carver, Minnesota";
+            // *** ADD Responsive Styles to Results Page CSS ***
+            newWindow.document.write(`
+                <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Your Sensory Profile Results</title><style>
+                /* Responsive Styles for Results Page */
+                body{font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 15px; line-height:1.6; color: #333;}
+                h1{color:#333;border-bottom:1px solid #ccc;padding-bottom:10px; font-size: 1.7em;}
+                h3{margin-top:25px;color:#0056b3;border-bottom:1px solid #eee;padding-bottom:5px; font-size: 1.3em;}
+                h4{margin-top:15px;margin-bottom:5px;color:#007bff; font-size: 1.1em;}
+                ul, ol{margin-top:5px;padding-left:25px;}
+                li{margin-bottom:5px;}
+                .profile-section{margin-top:30px;border-top:2px solid #007bff;padding-top:15px;}
+                .profile-line{margin-bottom:15px;}
+                strong{display:block;margin-bottom:3px;}
+                .next-step-section{margin-top:30px;padding-top:15px;border-top:1px dotted #aaa;}
+                hr { margin-top: 30px; }
+                p small { font-size: 0.85em; color: #555; }
+                button.close-btn{ /* Ensure close button is tappable */
+                    display: inline-block;
+                    margin-top:25px; margin-right:10px; padding:10px 18px; /* Increased padding */
+                    font-size: 1em; cursor:pointer; background-color:#6c757d; color:#fff; border:none; border-radius:4px;
+                }
+                button.close-btn:hover{background-color:#5a6268;}
+                /* Media query for slightly larger padding on wider results screens */
+                @media (min-width: 600px) { body { padding: 25px; } }
+                </style></head><body>
+                <h1>Your Sensory Profile Results</h1>
+                ${resultsContentHTML}
+                <hr><p><small>Results generated on ${currentDate} from ${currentLocation}. Consult a professional for personalized advice.</small></p>
+                <button onclick="window.close();" class="close-btn">Close Results & Return</button>
+                </body></html>`);
+            newWindow.document.close();
+        });
+
+        // --- Event Listener for Clear Button ---
+        clearButton.addEventListener('click', function() {
+            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        });
+
+    </script>
+
+</body>
+</html>
